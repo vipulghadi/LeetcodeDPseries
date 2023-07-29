@@ -1,0 +1,72 @@
+------------------------- using 0(m*n)extra space /dp solution  and recursive approach-----------------------------------------------------------
+ int minSum(vector<vector<int>>& grid,int n,int m,vector<vector<int>>& dp)
+    {
+        if(n==0&& m==0)return grid[n][m];
+        if(n<0||m<0)return INT_MAX/10 ;
+        if(dp[n][m]!=-1)return dp[n][m];
+        int left=grid[n][m]+minSum(grid,n,m-1,dp);
+        int up= grid[n][m]+minSum(grid,n-1,m,dp);
+        return dp[n][m]= min(left,up);
+    }
+    int minPathSum(vector<vector<int>>& grid) {
+        int n=grid.size(),m=grid[0].size();
+        vector<vector<int>>dp(n,vector<int>(m,-1));
+        return minSum(grid,n-1,m-1,dp);
+    }
+
+--------------------------------using 0(m*n)extra space  and iterative approach---------------------------------------------------------------
+ int n=grid.size(),m=grid[0].size();
+        vector<vector<int>>dp(n,vector<int>(m,-1));
+        int left,up;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+              if(i==0&&j==0)dp[i][j]=grid[i][j];
+              else{
+                  left=INT_MAX,up=INT_MAX;
+                  if(i>0)up=dp[i-1][j]+grid[i][j];
+                  if(j>0)left=dp[i][j-1]+grid[i][j];
+                  dp[i][j]=min(left,up);
+              }
+            }
+        }
+        return dp[n-1][m-1];
+
+---------------------------------------------using 2*m extra space-----------------------------------------------------------------------
+
+ int minPathSum(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        vector<int> pre(m, grid[0][0]);
+        vector<int> cur(m, 0);
+
+        for (int i = 1; i < m; i++)
+            pre[i] = pre[i - 1] + grid[i][0];
+
+        for (int j = 1; j < n; j++) { 
+            cur[0] = pre[0] + grid[0][j]; 
+            
+            for (int i = 1; i < m; i++)
+                cur[i] = min(cur[i - 1], pre[i]) + grid[i][j];
+            swap(pre, cur); 
+        }
+        return pre[m - 1];
+
+------------------------------------------------------using 0(1)extra space optimal-------------------------------------------------------------
+
+int n = grid.size();
+        int m = grid[0].size();
+        int left,up;
+       for(int i=0;i<n;i++){
+           for(int j=0;j<m;j++){
+               if(i==0&& j==0)continue;
+               else {
+                   left=INT_MAX,up=INT_MAX;
+                   if(i>0)up=grid[i-1][j];
+                   if(j>0)left=grid[i][j-1];
+                   grid[i][j]=grid[i][j]+min(left,up);
+               }
+           }
+       }
+       return grid[n-1][m-1];
+
+------------------------------------------------------------------------------------------------------------------------------
