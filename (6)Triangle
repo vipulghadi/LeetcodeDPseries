@@ -1,0 +1,45 @@
+-------------------------space (n*n) using recursive+dp ---------------------------------------------------------------------------
+int minSum(int n,int m,vector<vector<int>>& tri,vector<vector<int>>&dp)
+    {
+      if(n==tri.size()-1)
+      return tri[n][m];
+      if(n>=tri.size()|| m>=tri[tri.size()-1].size())return INT_MAX;
+      if(dp[n][m]!=-1)return dp[n][m];
+
+      int down=minSum(n+1,m,tri,dp);
+      int dia=minSum(n+1,m+1,tri,dp);
+      return dp[n][m]=tri[n][m]+min(down,dia); 
+
+    }
+    int minimumTotal(vector<vector<int>>& tri) {
+      int n=tri.size();
+      int m=tri[n-1].size();
+    vector<vector<int>>dp(n,vector<int>(m,-1));
+      return minSum(0,0,tri,dp);  
+    }
+------------------------------------space optimization with iterative approach-------------------------------------------------------------------------------------------------------
+ int n=tri.size();
+      int m=tri[n-1].size();
+    vector<vector<int>>dp(n,vector<int>(m,INT_MAX));
+
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<=i;j++)
+        {
+            if(i==0&&j==0)dp[i][j]=tri[i][j];
+            else if(j==0)dp[i][j]=tri[i][j]+dp[i-1][j];
+            else{
+                int toAdd=min(dp[i-1][j],dp[i-1][j-1]);
+                dp[i][j]=tri[i][j]+toAdd;
+            }
+        }
+
+    }
+
+    int mini=INT_MAX;
+    for(int i=0;i<dp[dp.size()-1].size();i++)
+    {
+mini=min(dp[dp.size()-1][i],mini);
+    }
+    return mini;
+--------------------------------------------------------------------------------------------------------------------------------
