@@ -1,0 +1,56 @@
+
+ int minPath(int rnum,int cnum,vector<vector<int>>& mat,vector<vector<int>>&dp)
+    {
+        if(rnum==0)
+        return mat[rnum][cnum];
+
+        if(rnum<0 || cnum<0 || cnum>=mat[0].size())return INT_MAX;
+        if(dp[rnum][cnum]!=-1)return dp[rnum][cnum];
+        int dl=INT_MAX,dr=INT_MAX;
+
+        int d=minPath(rnum-1,cnum,mat,dp);
+        if(cnum>0)dl=minPath(rnum-1,cnum-1,mat,dp);
+        if(cnum<mat[0].size()-1)dr=minPath(rnum-1,cnum+1,mat,dp);
+
+        return dp[rnum][cnum]=mat[rnum][cnum]+min(d,min(dr,dl));
+
+    }
+    int minFallingPathSum(vector<vector<int>>& mat) {
+        vector<vector<int>>dp(mat.size(),vector<int>(mat[0].size(),-1));
+        int mini=INT_MAX;
+        for(int i=0;i<mat[0].size();i++)
+
+        mini=min(mini,minPath(mat.size()-1,i,mat,dp));
+        return mini;
+    }
+----------------------------------------space optimize using for loop----------------------------------------------------------------------------
+int mini=INT_MAX;
+       vector<vector<int>>dp(mat.size(),vector<int>(mat[0].size(),-1));
+       for(int i=0;i<mat.size();i++){
+           for(int j=0;j<mat[0].size();j++){
+               if(i==0)dp[i][j]=mat[i][j];
+               else{
+                   int up=dp[i-1][j],upL=INT_MAX,upR=INT_MAX;
+                   if( j>0) upL=dp[i-1][j-1];
+                   if(j<mat[0].size()-1)upR=dp[i-1][j+1];
+                   dp[i][j]=mat[i][j]+min(up,min(upL,upR)); 
+               }
+           }
+       }
+       for(int i=0;i<mat[0].size();i++)mini=min(mini,dp[mat.size()-1][i]);
+       return mini;
+----------------------------------------------space optimize 0(1)---------------------------------------------------------------
+int mini=INT_MAX;
+       for(int i=0;i<mat.size();i++){
+           for(int j=0;j<mat[0].size();j++){
+               if(i==0)continue;
+               else{
+                   int up=mat[i-1][j],upL=INT_MAX,upR=INT_MAX;
+                   if( j>0) upL=mat[i-1][j-1];
+                   if(j<mat[0].size()-1)upR=mat[i-1][j+1];
+                   mat[i][j]=mat[i][j]+min(up,min(upL,upR)); 
+               }
+           }
+       }
+       for(int i=0;i<mat[0].size();i++)mini=min(mini,mat[mat.size()-1][i]);
+       return mini;
