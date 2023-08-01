@@ -1,0 +1,23 @@
+-----------------------------------------------------------------------------------------------------------
+int sum=0;
+       for(int i=0;i<nums.size();i++)sum+=nums[i];
+       if(sum%2!=0)return 0;
+       sum=sum/2;
+
+        vector<int>cur(sum+1,0);
+        cur[0]=1;
+
+        vector<int>pre(sum+1,0);
+        for(int i=0;i<nums.size();i++)
+        {   pre[0]=1;
+            for(int tar=1;tar<=sum;tar++)
+            { 
+             int notTake=cur[tar];
+             int take=0;
+             if(tar>=nums[i])take=cur[tar-nums[i]];
+             pre[tar]=(take||notTake);
+            }
+            swap(cur,pre);
+        }
+        return cur[sum];
+--------------------------------------------------------------------------------------------------------------
