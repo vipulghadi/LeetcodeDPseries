@@ -1,0 +1,55 @@
+-----------------------------------using recuesion----------------------------------
+int maxSum(int ind,int W,int wt[], int val[])
+    {
+        if(ind==0)return W>=wt[ind]?val[ind]:0;
+        
+        int notTake=maxSum(ind-1,W,wt,val);
+        int take=0;
+        if(W>=wt[ind])
+        {
+            take=val[ind]+maxSum(ind-1,W-wt[ind],wt,val);
+        }
+        return max(take,notTake);
+            
+    }
+    int knapSack(int W, int wt[], int val[], int n) 
+    { 
+      return maxSum(n-1,W,wt,val);
+    }
+-------------------------------using dp (recursive solution)-------------------------------------------------------
+int maxSum(int ind,int W,int wt[], int val[],vector<vector<int>>&dp)
+    {
+        if(ind==0)return W>=wt[ind]?val[ind]:0;
+        
+        if(dp[ind][W]!=-1)return dp[ind][W];
+        
+        int notTake=maxSum(ind-1,W,wt,val,dp);
+        int take=0;
+        if(W>=wt[ind])
+        {
+            take=val[ind]+maxSum(ind-1,W-wt[ind],wt,val,dp);
+        }
+        return dp[ind][W]=max(take,notTake);
+            
+    }
+    int knapSack(int W, int wt[], int val[], int n) 
+    { 
+        
+    vector<vector<int>>dp(n,vector<int>(W+1,-1));
+      return maxSum(n-1,W,wt,val,dp);
+
+--------------------------------------------------using iterative solution/tabulation method --------------------------------------------
+ n=n+1;
+    vector<vector<int>>dp(n,vector<int>(W+1,0));
+    for(int i=1;i<n;i++)
+    {
+        for(int tar=1;tar<=W;tar++)
+        {
+            int notTake=dp[i-1][tar];
+            int take=0;
+            if(tar>=wt[i-1])take=val[i-1]+dp[i-1][tar-wt[i-1]];
+            dp[i][tar]=max(take,notTake);
+        }
+    }
+    return dp[n-1][W];
+-----------------------------------------------------------------------------------------------------------------------------------------
