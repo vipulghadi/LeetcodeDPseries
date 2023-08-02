@@ -1,0 +1,47 @@
+-------------------------------------------------------------------------------------
+int minCoins(int ind,int amount,vector<int>&coins)
+    {  
+        if(ind==0)
+        {
+            if(amount % coins[ind]==0)return amount/coins[0];
+            else return 1e9;
+        }
+        if(amount==0)return 0;
+        if(amount<0)return 1e9;
+
+        int notPick=minCoins(ind-1,amount,coins);
+        int pick=1+minCoins(ind,amount-coins[ind],coins);
+        
+        return min(pick,notPick);
+       
+    }
+    
+    int coinChange(vector<int>& coins, int amount) 
+    {
+       
+      int ans= minCoins(coins.size()-1,amount,coins);
+      if(ans>=1e9)return -1;
+      return ans;
+    }
+---------------------------------------------------tabular----------------------------------------------------------------
+int coinChange(vector<int>& coins, int amount) {
+       
+        int n=coins.size()+1;
+        int m=amount+1;
+        vector<vector<int>>dp(n,vector<int>(m,0));
+
+        for(int i=1;i<m;i++)dp[0][i]=1e9;
+
+        for(int i=1;i<n;i++)
+        {
+            for(int tar=1;tar<m;tar++)
+            {
+                if(tar<coins[i-1])dp[i][tar]=dp[i-1][tar];
+                else{
+                    dp[i][tar]=min(dp[i-1][tar],1+dp[i][tar-coins[i-1]]);
+                }
+            }
+        }
+        return dp[n-1][m-1]==1e9?-1:dp[n-1][m-1];
+    }
+-----------------------------------------------------------------------------------------------------------------------------
