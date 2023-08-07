@@ -1,0 +1,23 @@
+----------------------------------------normal recursive solution------------------------------------------------
+   int steps(int l,int r,string&s){
+        if(l==r || l>r)return 0;
+        if(s[l]==s[r])return steps(l+1,r-1,s);
+        else  return min(1+steps(l,r-1,s),1+steps(l+1,r,s)); 
+
+    int minInsertions(string s) {
+        return steps(0,s.size()-1,s);
+    }
+---------------------------------------find the longest palindromic subsequense and just substract it from string size---------------------------------------------------------------------
+    int longestPalindromeSubseq(int l, int r, string &s, vector<vector<int>>& mem) {
+        if(l==r) return 1;
+        if(l>r) return 0;
+        if(mem[l][r]) return mem[l][r];
+        return mem[l][r] = s[l]==s[r] ? 2 + longestPalindromeSubseq(l+1,r-1, s,mem) : 
+            max(longestPalindromeSubseq(l+1,r, s,mem),longestPalindromeSubseq(l,r-1, s,mem));
+            }
+    int minInsertions(string s) {
+        int n = s.size();
+        vector<vector<int>> mem(n,vector<int>(n));
+        return n-longestPalindromeSubseq(0,n-1, s,mem); 
+    }
+---------------------------------------------------------------------------------------------------------------------
