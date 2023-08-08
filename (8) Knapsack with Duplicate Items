@@ -1,0 +1,14 @@
+---------------------------tabulation approach to solve the question---------------------------------------------------------------
+N++;W++;
+        vector<vector<int>>dp(N,vector<int>(W,0));
+        for(int i=0;i<W;i++)dp[0][i]=0;
+        for(int i=1;i<N;i++){
+            for(int j=1;j<W;j++){
+                int notTake=dp[i-1][j];
+                int take=INT_MIN;
+                if(j>=wt[i-1]) take=val[i-1]+dp[i][j-wt[i-1]];
+                 dp[i][j]=max(take,notTake);
+            }
+        }
+    return dp[N-1][W-1];
+-----------------------------------------------------------------------------
