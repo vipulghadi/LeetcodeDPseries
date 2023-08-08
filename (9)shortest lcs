@@ -1,0 +1,30 @@
+----------------------this code will give correct output but consumes all stack memory and cant pass all testcases---------------------
+string minSizeString(int ind1,int ind2,string&str1,string&str2,string ans)
+    {
+        //base case
+        if(ind1<0||ind2<0){
+            if(ind1<0)for(int i=ind2;i>=0;i--)ans+=str2[i];
+            if(ind2<0)for(int i=ind1;i>=0;i--)ans+=str1[i];
+            return ans;
+        }
+        //both same
+        if(str1[ind1]==str2[ind2]){ans+=str1[ind1];
+        return minSizeString(ind1-1,ind2-1,str1,str2,ans);
+        }
+        //if different
+        ans+=str1[ind1];
+        string a= minSizeString(ind1-1,ind2,str1,str2,ans);
+        ans.pop_back();
+        ans+=str2[ind2];
+        string b= minSizeString(ind1,ind2-1,str1,str2,ans);
+        ans.pop_back();
+        return a.size()>b.size()?b:a;
+
+    }
+    string shortestCommonSupersequence(string str1, string str2) {
+        string ans="";
+        ans=minSizeString(str1.size()-1,str2.size()-1,str1,str2,ans);
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+-----------------------------------------------------------------------------------------------------
