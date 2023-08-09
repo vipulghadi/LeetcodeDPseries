@@ -1,0 +1,30 @@
+--------------------------------------using dp with recursion----------------------------------------------------------------------------------------
+bool possible(int i,int j,string&p,string&s, vector<vector<int>>&dp)
+    {
+        //base cases
+        if(i<0&&j<0)return 1;
+        if(i<0 && j>=0)return 0;
+        if(j<0&& i>=0)
+        {
+            for(int k=0;k<=i;k++)
+            {
+                if(p[k]!='*')return 0;
+            }
+            return 1;
+        }
+        if(dp[i][j]!=-1)return dp[i][j];
+        if(p[i]==s[j]|| p[i]=='?')
+        {
+            return dp[i][j]= possible(i-1,j-1,p,s,dp);
+        }
+        else if(p[i]=='*')
+        {
+         return dp[i][j]=possible(i-1,j,p,s,dp)|| possible(i,j-1,p,s,dp);
+        }
+        else return 0;
+    }
+    bool isMatch(string s, string p) {
+        vector<vector<int>>dp(p.size(),vector<int>(s.size(),-1));
+        return possible(p.size()-1,s.size()-1,p,s,dp);
+    }
+-------------------------------------------------------------------------------------------------------------------------------
