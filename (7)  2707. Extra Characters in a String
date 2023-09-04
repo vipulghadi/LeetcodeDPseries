@@ -1,0 +1,26 @@
+------------------------------------------------recursive dp--------------------------------------------------------------
+class Solution {
+public:
+    unordered_set<string>set;
+    int solve(int ind,string &s,vector<int>&dp)
+    {
+        if(ind>=s.size())return dp[ind]=0;
+        if(dp[ind]!=-1)return dp[ind];
+        int mini=s.size();
+        string cur="";
+        for(int i=ind;i<s.size();i++){
+           cur+=s[i];
+           int curExtra=set.find(cur)==set.end()?cur.size():0;
+           int remExtra=solve(i+1,s,dp);
+           int totalExtra=curExtra+remExtra;
+           mini=min(mini,totalExtra);
+        }
+        return dp[ind]=mini;
+    }
+    int minExtraChar(string s, vector<string>& dictionary) {
+         vector<int>dp(51,-1);
+        for(auto i:dictionary)set.insert(i);
+        return solve(0,s,dp);
+    }
+};
+-------------------------------------------tabulation dp-----------------------------------------------------------
